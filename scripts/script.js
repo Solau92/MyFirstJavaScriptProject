@@ -1,6 +1,13 @@
-
-function afficherResultat(score, nbMots) {
-    console.log("Votre score final est de " + score + " sur " + nbMots)
+/**
+ * Affiche le score de l'utilisateur
+ * @param {number} score 
+ * @param {number} nbMotsProposes 
+ */
+function afficherResultat(score, nbMotsProposes) {
+    let spanScore = document.querySelector(".zoneScore span")
+    let affichageScore = `${score} / ${nbMotsProposes}` 
+    spanScore.innerText = affichageScore
+    console.log("Votre score final est de " + score + " sur " + nbMotsProposes)
 }
 
 function choisirPhrasesOuMots() {
