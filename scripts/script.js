@@ -7,46 +7,46 @@ function afficherResultat(score, nbMotsProposes) {
     let spanScore = document.querySelector(".zoneScore span")
     let affichageScore = `${score} / ${nbMotsProposes}` 
     spanScore.innerText = affichageScore
-    console.log("Votre score final est de " + score + " sur " + nbMotsProposes)
+    console.log("Votre score est de " + score + " sur " + nbMotsProposes)
 }
 
-function choisirPhrasesOuMots() {
-    let choixUtilisateur = prompt("Choisir mots ou phrases")
-    while(choixUtilisateur != "mots" && choixUtilisateur != "phrases") {
-        choixUtilisateur = prompt("Erreur, veuillez taper le mot \"mots\" ou le mot \"phrases\"")
-    }
-    return choixUtilisateur
+:µµ
+function afficherProposition(proposition) {
+    let zoneProposition = document.querySelector(".zoneProposition")
+    zoneProposition.innerText = proposition
 }
 
-function lancerBoucleDeJeu(listePropositions) {
-
-    let score = 0
-
-    for(let i = 0 ; i < listePropositions.length ; i++) {
-        let motUtilisateur = prompt("Entrez le mot : " + listePropositions[i])
-    
-        if(motUtilisateur === listePropositions[i]) {
-            score ++
-        }
-        console.log(score)
-    }
-    return score
-}
-
+/**
+ * Lance le jeu 
+ */
 function lancerJeu() {
-    let choixUtilisateur = choisirPhrasesOuMots()
     let score = 0
-    let nbMotsProposes = 0
+    let i = 0
 
-    if(choixUtilisateur === "mots") {
-        score = lancerBoucleDeJeu(listeMots)
-        nbMotsProposes = listeMots.length
-    } else {
-        score = lancerBoucleDeJeu(listePhrases)
-        nbMotsProposes = listePhrases.length
-    }
+    let btnValiderMot = document.getElementById("btnValiderMot")
+    let inputEcriture = document.getElementById("inputEcriture")
+   
+    afficherProposition(listeMots[i])
 
-    afficherResultat(score, nbMotsProposes)
+    btnValiderMot.addEventListener("click", () => {
+        console.log(inputEcriture.value)
+
+        if (inputEcriture.value === listeMots[i]) {
+            score++
+        }
+        i++
+        afficherResultat(score, i)
+        inputEcriture.value = ''
+        if(listeMots[i] === undefined) {
+            afficherProposition("Le jeu est fini !")
+            btnValiderMot.disabled = true
+        } else {
+            afficherProposition(listeMots[i])
+        }
+    })
+
+    afficherResultat(score, i)
+
 }
 
 
