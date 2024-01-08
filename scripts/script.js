@@ -10,7 +10,10 @@ function afficherResultat(score, nbMotsProposes) {
     console.log("Votre score est de " + score + " sur " + nbMotsProposes)
 }
 
-:µµ
+/**
+ * 
+ * @param {*} proposition 
+ */
 function afficherProposition(proposition) {
     let zoneProposition = document.querySelector(".zoneProposition")
     zoneProposition.innerText = proposition
@@ -22,28 +25,42 @@ function afficherProposition(proposition) {
 function lancerJeu() {
     let score = 0
     let i = 0
+    let listePropositions = listeMots
 
     let btnValiderMot = document.getElementById("btnValiderMot")
     let inputEcriture = document.getElementById("inputEcriture")
    
-    afficherProposition(listeMots[i])
+    afficherProposition(listePropositions[i])
 
     btnValiderMot.addEventListener("click", () => {
         console.log(inputEcriture.value)
 
-        if (inputEcriture.value === listeMots[i]) {
+        if (inputEcriture.value === listePropositions[i]) {
             score++
         }
         i++
         afficherResultat(score, i)
         inputEcriture.value = ''
-        if(listeMots[i] === undefined) {
+        if(listePropositions[i] === undefined) {
             afficherProposition("Le jeu est fini !")
             btnValiderMot.disabled = true
         } else {
-            afficherProposition(listeMots[i])
+            afficherProposition(listePropositions[i])
         }
     })
+
+    let listeBtnRadio = document.querySelectorAll(".optionSource input")
+    for(let j = 0 ; j < listeBtnRadio.length ; j++) {
+        listeBtnRadio[j].addEventListener("change", (event) => {
+            console.log(event.target.value)
+            if(event.target.value === "1") {
+                listePropositions = listeMots
+            } else {
+                listePropositions = listePhrases
+            }
+            afficherProposition(listePropositions[i])
+        })
+    }
 
     afficherResultat(score, i)
 
