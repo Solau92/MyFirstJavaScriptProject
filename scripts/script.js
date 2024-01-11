@@ -30,21 +30,62 @@ function afficherEmail(nom, email, score) {
     location.href = mailto
 }
 
+/**
+ * 
+ * @param {string} nom 
+ * @throws {Error}
+ */
 function validerNom(nom) {
     
-    if(nom.length >= 2){
-        return true
+    if(nom.length < 2){
+        throw new Error("Le nom est trop court")
     } 
-    return false
 }
 
+/**
+ * 
+ * @param {string} email 
+ * @throws {Error} 
+ */
 function validerEmail(email) {
     let regex = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z0-9._-]+")
     
-    if(regex.test(email)){
-        return true
+    if(! regex.test(email)){
+        throw new Error("L'email n'est pas valide")
     } 
-    return false
+
+}
+
+function afficherMessageErreur(message) {
+    let spanErreurMessage = document.getElementById("erreurMessage")
+    
+    if(!spanErreurMessage) {
+        let popup = document.querySelector(".popup")
+        spanErreurMessage = document.createElement("span")
+        spanErreurMessage.id = "erreurMessage"
+        popup.append(spanErreurMessage)
+    }
+    spanErreurMessage.innerText = messasge
+
+}
+
+function gererFormulaire(scoreEmail) {
+
+    try {
+        let baliseNom = document.getElementById("nom")
+        let nom = baliseNom.value
+        validerNom(nom)
+
+        let baliseEmail = document.getElementById("email")
+        email = baliseEmail.value
+        validerEmail(email)
+        afficherMessageErreur("")
+        afficherEmail(nom, email, scoreEmail)
+
+    } catch (erreur) {
+        afficherMessageErreur(erreur.message)
+    }
+    
 }
 
 
@@ -94,22 +135,9 @@ function lancerJeu() {
     let form = document.querySelector("form")
     form.addEventListener("submit", (event) => {
         event.preventDefault()
-
-        let baliseNom = document.getElementById("nom")
-        let nom = baliseNom.value
-
-        let baliseEmail = document.getElementById("email")
-        email = baliseEmail.value
-
-        if(validerNom(nom) && validerEmail(email)) {
-            let scoreEmail = `${score} / ${i}`
-            afficherEmail(nom, email, scoreEmail)
-        } else {
-            console.log("Erreur")
-        }
-        console.log(nom, email)
+        let scoreEmail = `${score} / ${i}`
+        gererFormulaire(scoreEmail)  
     })
-
     afficherResultat(score, i)
 
 }
